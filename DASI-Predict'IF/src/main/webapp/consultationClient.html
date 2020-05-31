@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Predict'IF</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+        <!-- Favicons -->
+        <link href="img/favicon.png" rel="icon">
+        <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700" rel="stylesheet">
+
+        <!-- Bootstrap CSS File -->
+        <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Libraries CSS Files -->
+        <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link href="lib/animate/animate.min.css" rel="stylesheet">
+
+        <!-- Main Stylesheet File -->
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <header id="header" style="background: #343b40;
+                padding: 30px 0;
+                color: #fff;">
+            <div class="container">
+                <div id="logo" class="pull-left">
+                    <h1><a href="">Predict'IF</a></h1>
+                </div>
+                <nav id="nav-menu-container">
+                    <ul class="nav-menu">
+                        <li class="menu-active"><a href="./index.html">Home</a></li>
+                        <li><a href="./loginEmploye.html">Employe</a></li>
+                        <li><a href="./inscriptionClient.html">Inscription</a></li>
+                    </ul>
+                </nav><!-- #nav-menu-container -->
+            </div>
+        </header><!-- #header -->
+        <main id="main">
+            <section id="about">
+                <div class="container">
+                    <div class="row about-container">
+
+                        <div class="col-lg-6 content order-lg-1 order-2">
+                            <p id="notification"></p>
+                            <h2 class="title">Votre information Personnelle</h2>
+                            <p id='client'>
+
+                            </p>
+                            <div class="icon-box wow fadeInUp" data-wow-delay="0.2s">
+                                <div class="icon"><i class="fa fa-photo"></i></div>
+                                <h4 class="title">Votre profile astral</h4>
+                                <p class="description" id="profil"></p>
+                            </div>
+                        </div>
+
+                    </div>
+            </section><!-- #about -->
+            <section id="services">
+                <div class="container wow fadeIn">
+                    <div class="section-header">
+                        <h3 class="section-title">Vos consultations historiques</h3>
+                        <p><br/></p>
+                    </div>
+                    <div id='historique' class="row">
+
+                    </div>
+                </div>
+                <div class="container wow fadeIn">
+                    <div class="section-header">
+                        <h3 class="section-title">Les mediums à votre disposition</h3>
+                        <p><br/></p>
+                    </div>
+                    <div>
+                        <div id="listMedium">
+
+                        </div>
+                    </div>
+                </div>
+            </section><!-- #services -->
+        </main>
+
+
+        <script>
+            function afficherUnMedium(medium) {
+                console.log('Medium', medium);
+                $('#listMedium').append(
+                        '<p>' + '<input type="radio" name="medium" value="' + medium.denomination + '">'
+                        + medium['denomination'] + ' est un Medium de type' + medium['type']
+                        + '. ' + medium['presentation'] + ". C'est un medium " + medium['genre'] + '.</p>'
+                        );
+            }
+            ;
+            function lancerConsultation() {
+                $('#listMedium').append(
+                        '<p>' + '<input type = "submit" id="commencer" value="commencer votre consultation"/>' + '</p>'
+                        );
+            }
+            ;
+            function afficherClient(client) {
+                $('#client').append('Vous etes ' + client.prenom + ' ' + client.nom + '.<br\>' +
+                        'Votre Identifiant ' + client.mail + '.<br\>');
+                $('#profil').append('Signe du zodiaque : ' + client.signeDuZodiaque + '<br\>' +
+                        'Signe astrologique chinois : ' + client.signeAstrologiqueChinois + '<br\>' +
+                        'Couleur porte-bonheur : ' + client.couleurPorteBonheur + '<br\>' +
+                        'Animal-totem : ' + client.animalTotem
+                        );
+            }
+            function afficherCons(consultation) {
+                console.log(consultation.dateDebut);
+                var date = consultation.dateDebut;
+                $('#historique').append('<div  class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.2s"><div class="box">' +
+                        '<div class="icon"><a href=""><i class="fa fa-paper-plane"></i></a></div>' +
+                        '<h4 class="title"><a href="">Consultation</a></h4><p class="description">'
+                        + 'Vous, ' + consultation.clientPrenom + ' avez fait une consultation avec le medium ' + consultation.mediumDenomination + '.<br/>' +
+                        + date + '</p></div></div>'
+                        );
+            }
+            ;
+            $(document).ready(function () {
+                var medium;
+                var clientId;
+                $('#listMedium').on('click', '#commencer', function () {
+                    medium = $("input[name=medium]:checked").val();
+                    console.log(medium);
+                    $.ajax({
+                        url: './ActionServlet',
+                        method: 'POST',
+                        data: {
+                            todo: 'choisir-medium',
+                            medium: medium
+                        },
+                        dataType: 'json'
+                    })
+                            .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                                window.location.assign("./startConsultation.html");
+                            })
+                            .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                                console.log('Error', error); // LOG dans Console Javascript
+                                alert("Erreur lors de l'appel AJAX choisir-medium");
+                            })
+                            .always(function () { // Fonction toujours appelée
+
+                            });
+                });
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        todo: 'afficher-client-client'
+                    },
+                    dataType: 'json'
+                })
+                        .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                            console.log('Response', response); // LOG dans Console Javascript
+                            if (response.id !== null) {
+                                //$('#notification').html("Connexion OK");  // Message pour le paragraphe de notification
+                                // TODO: afficher les informations du client dans la notification
+                                // Exemple: Connexion de Ada Lovelace (ID 1)
+                                clientId = response.id;
+                                afficherClient(response);
+                                var listcons = response.listcons;
+                                for (var i = 0; i < listcons.length; i++) {
+                                    afficherCons(listcons[i]);
+                                }
+                            } else {
+                                $('#notification').html("Erreur de Connexion"); // Message pour le paragraphe de notification
+                            }
+                        })
+                        .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                            console.log('Error', error); // LOG dans Console Javascript
+                            alert("Erreur lors de l'appel AJAX");
+                        })
+                        .always(function () { // Fonction toujours appelée
+
+                        });
+
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        todo: 'lister-medium',
+                    },
+                    dataType: 'json'
+                })
+                        .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                            if (response.mediums !== null) {
+                                var mediums = response.mediums;
+                                for (var i = 0; i < mediums.length; i++) {
+                                    afficherUnMedium(mediums[i]);
+                                }
+                                lancerConsultation();
+                            } else {
+                                $('#notification').html("Erreur de Connexion"); // Message pour le paragraphe de notification
+                            }
+                        })
+                        .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                            console.log('Error', error); // LOG dans Console Javascript
+                            alert("Erreur lors de l'appel AJAX");
+                        })
+                        .always(function () { // Fonction toujours appelée
+
+                        });
+
+
+            });
+        </script>
+    </body>
+</html>

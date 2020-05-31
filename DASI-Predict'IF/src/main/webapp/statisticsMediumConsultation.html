@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Statistics</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    </head>
+    <body>
+        <h1>Chercher Combien de consultation realiser par medium</h1>
+        <br/>
+        <p>Veuillez entrer le nom de denomination cherche</p>
+        
+        Denomination: <input type="text" id="champ-denomination" size="40" />
+        <br/>
+        <button id="bouton-chercher">Chercher</button>
+        <br/><br/><br/>
+        Medium: <p id="affichage"></p>
+        <br/><br/><br/>
+        
+        <p>Voici les 5 Cinq mediums plus consulté</p>
+        <div id="statistics2"></div>
+        
+        <br/><br/><br/>
+        <p>Voici les employes et leur Nbr de Consultation</p>
+        <div id="statistics3"></div>
+        <br/><br/><br/>
+        <p><a href="loginEmploye.html">Retour à la page de Connexion</a></p>
+        
+        
+        
+    <script>
+            $(document).ready( function () {
+                
+                $.ajax({
+                        url: './ActionServlet',
+                        method: 'POST',
+                        data: {
+                            todo: 'employes-consulte'
+                        },
+                        dataType: 'json'
+                    })
+                .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                        console.log('Response',response); // LOG dans Console Javascript
+                        
+                            //$('#notification').html("Connexion OK");  // Message pour le paragraphe de notification
+                            // TODO: afficher les informations du client dans la notification
+                            // Exemple: Connexion de Ada Lovelace (ID 1)
+                            var employes = response.mediums;//这里写mediums是因为Serialisation的文件里面写的是mediums。。。
+                            $('#statistics3').append("<table><tr><th>Nom de l'employe</th><th>Nbr de Consultation</th></tr>");
+                            for(i=0;i<employes.length;i++){
+                                $('#statistics3').append("<tr><td>nom du employe:"+employes[i].nom+"<td/>");
+                                $('#statistics3').append("<td>nombre de consultation:"+employes[i].nbrConsultation+"<td/></tr>");
+                            }
+                            $('#statistics3').append("</table>");
+                      
+                    })
+                    .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                        console.log('Error',error); // LOG dans Console Javascript
+                        alert("Erreur lors de l'appel AJAX");
+                    })
+                    .always( function () { // Fonction toujours appelée
+                        
+                    });
+                
+                    $.ajax({
+                        url: './ActionServlet',
+                        method: 'POST',
+                        data: {
+                            todo: 'cinq-plus-consulte'
+                            
+                        },
+                        dataType: 'json'
+                    })
+                .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                        console.log('Response',response); // LOG dans Console Javascript
+                        
+                            //$('#notification').html("Connexion OK");  // Message pour le paragraphe de notification
+                            // TODO: afficher les informations du client dans la notification
+                            // Exemple: Connexion de Ada Lovelace (ID 1)
+                            var mediums = response.mediums;
+                            $('#statistics2').append("<table><tr><th>Denomination du medium</th><th>Nbr de Consultation</th></tr>");
+                            for(i=0;i<5&&i<mediums.length;i++){
+                                $('#statistics2').append("<tr><td>Denomination:"+mediums[i].denomination+"<td/>");
+                                $('#statistics2').append("<td>nombre de consultation:"+mediums[i].nbrConsultation+"<td/></tr>");
+                            }
+                            $('#statistics2').append("</table>");
+                      
+                    })
+                    .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                        console.log('Error',error); // LOG dans Console Javascript
+                        alert("Erreur lors de l'appel AJAX");
+                    })
+                    .always( function () { // Fonction toujours appelée
+                        
+                    });
+                
+                $('#bouton-chercher').on( 'click', function () { // Fonction appelée lors du clic sur le bouton
+
+                    console.log("clic sur le bouton de connexion"); // LOG dans Console Javascript
+                    $('#notification').html("En cours de chercher..."); // Message pour le paragraphe de notification
+
+                    // Récupération de la valeur des champs du formulaire
+                    var champdenomination = $('#champ-denomination').val();
+                    
+
+                    // Appel AJAX
+                    $.ajax({
+                        url: './ActionServlet',
+                        method: 'POST',
+                        data: {
+                            todo: 'chercher-medium',
+                            denomination: champdenomination
+                        },
+                        dataType: 'json'
+                    })
+                    .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                        console.log('Response',response); // LOG dans Console Javascript
+                        if (response.trouve) {
+                            //$('#notification').html("Connexion OK");  // Message pour le paragraphe de notification
+                            // TODO: afficher les informations du client dans la notification
+                            // Exemple: Connexion de Ada Lovelace (ID 1)
+                            var medium = response.medium;
+                            $('#affichage').html("Medium: " + medium.denomination + " de type " + medium.type +  ") qui a "+medium.nbrConsultation+" fois de consultation au total.");  // Message pour le paragraphe de notification
+                        }
+                        else {
+                            $('#affichage').html("Medium non trouve"); // Message pour le paragraphe de notification
+                        }
+                    })
+                    .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                        console.log('Error',error); // LOG dans Console Javascript
+                        alert("Erreur lors de l'appel AJAX");
+                    })
+                    .always( function () { // Fonction toujours appelée
+                        
+                    });
+                });
+                
+                
+                    
+                    
+            });
+            
+            
+            
+            
+        </script>
+    </body>
+    
+</html>

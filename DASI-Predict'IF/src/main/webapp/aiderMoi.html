@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>En cours de consultation......</title>
+        <!-- Librairie Javascript: jQuery (v3.4.1) -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    </head>
+    <body>
+
+        <h1>En cours de consultation......</h1>
+        <h3>En cas de panne de l'inspiration</h3>
+
+        <p id="notification">Veuillez choisir 3 chiffre pour amour, santé et travail</p>
+
+        Amour:  <select id='amour'>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+
+        Santé:  <select id='sante'>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+
+        Travail:<select id='travail'>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+
+        <!-- Paragraphe avec id="notification" pour les messages de notification -->
+
+
+        <!-- Champs et Bouton de Formulaire -->
+        <br/><br/><br/>
+        Amour:<p id='commentaire0'></p>
+        Sante:<p id='commentaire1'></p>
+        Travail：<p id='commentaire2'></p>
+        <button id="aide">AideMoi</button>
+        <button id="fini">Fini</button>
+        <br/><br/><br/>
+        Commentaire:<textarea id="commentaire"></textarea>
+
+        <script>
+            $(document).ready(function () {
+                $('#aide').on('click', function () { // Fonction appelée lors du clic sur le bouton
+                    $.ajax({
+                        url: './ActionServlet',
+                        method: 'POST',
+                        data: {
+                            todo: 'AiderMoi',
+
+                            amour: amour,
+                            sante: sante,
+                            travail: travail
+                        },
+                        dataType: 'json'
+                    })
+                            .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                                console.log('Response', response); // LOG dans Console Javascript
+                                if (response.existance) {
+                                    //$('#notification').html("Connexion OK");  // Message pour le paragraphe de notification
+                                    // TODO: afficher les informations du client dans la notification
+                                    // Exemple: Connexion de Ada Lovelace (ID 1)
+                                    $('#commentaire0').html(response.commentaire.prediAmour);
+                                    $('#commentaire1').html(response.commentaire.prediSante);
+                                    $('#commentaire2').html(response.commentaire.prediTravail);
+
+
+                                } else {
+                                    $('#notification').html("Le predict n'exist pas. Réesssayer"); // Message pour le paragraphe de notification
+                                }
+                            })
+                            .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                                console.log('Error', error); // LOG dans Console Javascript
+                                alert("Erreur lors de l'appel AJAX");
+                            })
+                            .always(function () { // Fonction toujours appelée
+
+                            });
+                });
+
+
+
+                console.log(""); // LOG dans Console Javascript
+                $('#notification').html("En cours de consultation..."); // Message pour le paragraphe de notification
+
+                // Récupération de la valeur des champs du formulaire
+                var amour = $('#amour').val();
+                var sante = $('#sante').val();
+                var travail = $('#travail').val();
+                
+
+                // Appel AJAX
+                ////////////////////////////////////////////////////需要从上一页得到client的信息
+
+
+
+                $('#fini').on('click', function () {
+                    var commentaire = $('#commentaire').val();
+                    $.ajax({
+                        url: './ActionServlet',
+                        method: 'POST',
+                        data: {
+                            todo: 'fini-consultation',
+                            commentaire: commentaire
+
+                        },
+                        dataType: 'json'
+                    })
+                            .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                                console.log('Response', response); // LOG dans Console Javascript
+                                window.location.assign("./statisticsMediumConsultation.html");
+                            })
+                            .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                                console.log('Error', error); // LOG dans Console Javascript
+                                alert("Erreur lors de l'appel AJAX");
+                            })
+                            .always(function () { // Fonction toujours appelée
+
+                            });
+                });
+            });
+        </script>
+    </body>
+
+</html>

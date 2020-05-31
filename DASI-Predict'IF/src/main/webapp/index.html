@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Predict'IF</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+        <!-- Favicons -->
+        <link href="img/favicon.png" rel="icon">
+        <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700" rel="stylesheet">
+
+        <!-- Bootstrap CSS File -->
+        <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Libraries CSS Files -->
+        <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link href="lib/animate/animate.min.css" rel="stylesheet">
+
+        <!-- Main Stylesheet File -->
+        <link href="css/style.css" rel="stylesheet">
+        
+    </head>
+    <body>
+        <script>
+            $(document).ready(function () {
+                var medium;
+                var client;
+                var employe;
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        todo: 'chiffres'
+                    },
+                    dataType: 'json'
+                })
+                        .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                            console.log('Response', response); // LOG dans Console Javascript
+                            if (response.client !== null) {
+                                //$('#notification').html("Connexion OK");  // Message pour le paragraphe de notification
+                                // TODO: afficher les informations du client dans la notification
+                                // Exemple: Connexion de Ada Lovelace (ID 1)
+                                client = response.client * 100 + 47;
+                                medium = response.medium * 10 + 9;
+                                employe = response.employe * 10 + 3;
+                                $('#client').html(client); 
+                                $('#medium').html(medium);
+                                $('#employe').html(employe);
+                            }
+                        })
+                        .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                            console.log('Error', error); // LOG dans Console Javascript
+                            alert("Erreur lors de l'appel AJAX");
+                        })
+                        .always(function () { // Fonction toujours appelée
+
+                        });
+                    });
+        </script>
+        <header id="header">
+            <div class="container">
+                <div id="logo" class="pull-left">
+                    <h1><a href="#hero">Predict'IF</a></h1>
+                </div>
+                <nav id="nav-menu-container">
+                    <ul class="nav-menu">
+                        <li class="menu-active"><a href="#hero">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="./loginClient.html">Client</a></li>
+                        <li><a href="./loginEmploye.html">Employe</a></li>
+                        <li><a href="./inscriptionClient.html">Inscription</a></li>
+                    </ul>
+                </nav><!-- #nav-menu-container -->
+            </div>
+        </header><!-- #header -->
+
+        <section id="hero">
+            <div class="hero-container">
+                <h1>Predict'IF</h1>
+                <h2>Support Medium pour votre meilleure vie</h2>
+                <a href="./loginClient.html" class="btn-get-started">Découvrir</a>
+            </div>
+        </section><!-- #hero -->
+
+        <main id="main">
+            <section id="about">
+                <div class="container">
+                    <div class="row about-container">
+
+                        <div class="col-md-12 content">
+                            <h2 class="title">Notre équipe</h2>
+                            <p>
+                                PREDICT’IF est un cabinet de voyance par téléphone. Ses mediums sont spirites, cartomanciens ou
+astrologues. Reconnus internationalement, ils ont été sélectionnés avec la plus grande rigueur, et sont
+réunis pour travailler avec précision, honnêteté et sérieux dans leur spécialité respective. Leurs
+prédictions personnalisées pour chaque client répondent à toutes les questions d’ordre sentimental,
+professionnel ou psychologique dans le plus strict respect de la déontologie.
+                            </p>
+
+                            <div class="icon-box wow fadeInUp">
+                                <div class="icon"><i class="fa fa-shopping-bag"></i></div>
+                                <h4 class="title"><a href="">Staff</a></h4>
+                                <p class="description">Nos employés restent à votre disposition si vous avez des soucis</p>
+                            </div>
+
+                            <div class="icon-box wow fadeInUp" data-wow-delay="0.2s">
+                                <div class="icon"><i class="fa fa-photo"></i></div>
+                                <h4 class="title"><a href="">Medium</a></h4>
+                                <p class="description">Nos mediums, venant des institutions reconnues, décondent votre vie</p>
+                            </div>
+
+                            <div class="icon-box wow fadeInUp" data-wow-delay="0.4s">
+                                <div class="icon"><i class="fa fa-bar-chart"></i></div>
+                                <h4 class="title"><a href="">Programmeur</a></h4>
+                                <p class="description">Les programmeurs? Peu importes.</p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </section><!-- #about -->
+
+            <!--==========================
+              Facts Section
+            ============================-->
+            <section id="facts">
+                <div class="container wow fadeIn">
+                    <div class="section-header">
+                        <h3 class="section-title">Chiffres</h3>
+                        <p class="section-description">Nous vous présentons notre équipe mytique</p>
+                    </div>
+                    <div class="row counters">
+
+                        <div class="col-lg-4 col-6 text-center">
+                            <span id='client' data-toggle="counter-up">0</span>
+                            <p>Clients</p>
+                        </div>
+
+                        <div class="col-lg-4 col-6 text-center">
+                            <span id='employe' data-toggle="counter-up">0</span>
+                            <p>Employes</p>
+                        </div>
+
+                        <div class="col-lg-4 col-6 text-center">
+                            <span id='medium' data-toggle="counter-up">0</span>
+                            <p>Mediums</p>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section><!-- #facts -->
+        </main>
+        <footer id="footer">
+            <div class="footer-top">
+                <div class="container">
+
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="copyright">
+                    &copy; Copyright <strong>Regna</strong>. All Rights Reserved
+                </div>
+                <div class="credits">
+                    <!--
+                      All the links in the footer should remain intact.
+                      You can delete the links only if you purchased the pro version.
+                      Licensing information: https://bootstrapmade.com/license/
+                      Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Regna
+                    -->
+                    Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                </div>
+            </div>
+        </footer><!-- #footer -->
+
+        <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+        <!-- JavaScript Libraries -->
+        <script src="lib/jquery/jquery.min.js"></script>
+        <script src="lib/jquery/jquery-migrate.min.js"></script>
+        <script src="lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="lib/easing/easing.min.js"></script>
+        <script src="lib/wow/wow.min.js"></script>
+        <script src="lib/waypoints/waypoints.min.js"></script>
+        <script src="lib/counterup/counterup.min.js"></script>
+        <script src="lib/superfish/hoverIntent.js"></script>
+        <script src="lib/superfish/superfish.min.js"></script>
+
+        <!-- Contact Form JavaScript File -->
+        <script src="contactform/contactform.js"></script>
+
+        <!-- Template Main Javascript File -->
+        <script src="js/main.js"></script>
+        
+    </body>
+</html>

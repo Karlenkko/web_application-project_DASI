@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Connexion</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+        <!-- Favicons -->
+        <link href="img/favicon.png" rel="icon">
+        <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700" rel="stylesheet">
+
+        <!-- Bootstrap CSS File -->
+        <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Libraries CSS Files -->
+        <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link href="lib/animate/animate.min.css" rel="stylesheet">
+
+        <!-- Main Stylesheet File -->
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <header id="header" style="background: #343b40;
+  padding: 30px 0;
+  color: #fff;">
+            <div class="container">
+                <div id="logo" class="pull-left">
+                    <h1><a href="">Predict'IF</a></h1>
+                </div>
+                <nav id="nav-menu-container">
+                    <ul class="nav-menu">
+                        <li class="menu-active"><a href="./index.html">Home</a></li>
+                        <li><a href="./loginClient.html">Client</a></li>
+                        <li><a href="./loginEmploye.html">Employe</a></li>
+                        <li><a href="./inscriptionClient.html">Inscription</a></li>
+                    </ul>
+                </nav><!-- #nav-menu-container -->
+            </div>
+        </header><!-- #header -->
+        <div><p></p></div>
+        <div><p></p></div>
+        <div><p></p></div>
+        <div><p> </p><p> </p></div>
+        
+        <main id="main">
+            <section id="contact">
+                <div class="container wow fadeInUp">
+                    <div class="section-header">
+                        <div><p > </p></div>
+                        <h3 class="section-title">Connexion</h3>
+                        <div><p > </p></div>
+                        
+                        <p id="notification" class="section-description">Veuillez saisir votre identifiant (adresse mail) et votre mot de passe. Si vous avez des question, nous contactez.</p>
+                    </div>
+                </div>
+
+                <div class="container wow fadeInUp mt-5">
+                    <div class="row justify-content-center">
+
+                        <div class="col-lg-3 col-md-4">
+
+                            <div class="info">
+                                <div>
+                                    <i class="fa fa-map-marker"></i>
+                                    <p>20 Avenue Albert Einstein<br>Villeurbanne, 69100</p>
+                                </div>
+
+                                <div>
+                                    <i class="fa fa-envelope"></i>
+                                    <p>shihang.zhou@insa-lyon.fr</p>
+                                </div>
+
+                                <div>
+                                    <i class="fa fa-phone"></i>
+                                    <p>+33 0000000000</p>
+                                </div>
+                            </div>
+
+                            <div class="social-links">
+                                <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                                <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                                <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
+                                <a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a>
+                                <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-5 col-md-8">
+                            <div class="form">
+                                <div id="sendmessage">Your message has been sent. Thank you!</div>
+                                <div id="errormessage"></div>
+                                <form  role="form" class="contactForm">
+                                    <div class="form-group">
+                                        <input id="champ-login"  type="email" class="form-control" name="email" placeholder="Identifiant" data-rule="email" data-msg="Please enter a valid email" />
+                                        <div class="validation"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" name="password" id="champ-password" placeholder="Mot de passe"/>
+                                        <div class="validation"></div>
+                                    </div>
+                                    
+                                    <div class="text-center"><button id="bouton-connexion" type="submit">Connexion</button></div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div><p > _</p></div>
+                <div><p >_ </p></div>
+                <div><p >_ </p></div>
+                <div><p >_ </p></div>
+                <div><p >_ </p></div>
+                <div><p > </p></div>
+                <div><p > </p></div>
+                <div><p > </p></div>
+            </section><!-- #contact -->
+            
+        </main>
+        <!-- 
+        Identifiant: <input type="text" id="champ-login" size="40" />
+        <br/>
+        Mot de passe: <input type="password" id="champ-password" />
+        <br/>
+         -->
+        <!-- Lien vers l'accueil -->
+
+        <script>
+            $(document).ready(function () {
+                $('#bouton-connexion').on('click', function () { // Fonction appelée lors du clic sur le bouton
+
+                    console.log("clic sur le bouton de connexion"); // LOG dans Console Javascript
+                    $('#notification').html("Connexion..."); // Message pour le paragraphe de notification
+
+                    // Récupération de la valeur des champs du formulaire
+                    var champLogin = $('#champ-login').val().toLowerCase();
+                    var champPassword = $('#champ-password').val();
+
+                    // Appel AJAX
+                    $.ajax({
+                        url: './ActionServlet',
+                        method: 'POST',
+                        data: {
+                            todo: 'connecter-client',
+                            login: champLogin,
+                            password: champPassword
+                        },
+                        dataType: 'json'
+                    })
+                            .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                                console.log('Response', response); // LOG dans Console Javascript
+                                if (response.connexion) {
+                                    //$('#notification').html("Connexion OK");  // Message pour le paragraphe de notification
+                                    // TODO: afficher les informations du client dans la notification
+                                    // Exemple: Connexion de Ada Lovelace (ID 1)
+                                    var client = response.client;
+                                    $('#notification').html("Connexion de " + client.prenom + " " + client.nom + " (ID " + client.id + ")");  // Message pour le paragraphe de notification
+                                    window.location.assign("./consultationClient.html");
+                                } else {
+                                    $('#notification').html("Erreur de Connexion"); // Message pour le paragraphe de notification
+                                }
+                            })
+                            .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                                console.log('Error', error); // LOG dans Console Javascript
+                                alert("Erreur lors de l'appel AJAX");
+                            })
+                            .always(function () { // Fonction toujours appelée
+
+                            });
+                });
+            });
+        </script>
+        
+        
+        
+        <footer id="footer">
+            <div class="footer-top">
+                <div class="container">
+
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="copyright">
+                    &copy; Copyright <strong>Regna</strong>. All Rights Reserved
+                </div>
+                <div class="credits">
+                    <!--
+                      All the links in the footer should remain intact.
+                      You can delete the links only if you purchased the pro version.
+                      Licensing information: https://bootstrapmade.com/license/
+                      Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Regna
+                    -->
+                    Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                </div>
+            </div>
+        </footer><!-- #footer -->
+
+        <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+        <!-- JavaScript Libraries -->
+        <script src="lib/jquery/jquery.min.js"></script>
+        <script src="lib/jquery/jquery-migrate.min.js"></script>
+        <script src="lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="lib/easing/easing.min.js"></script>
+        <script src="lib/wow/wow.min.js"></script>
+        <script src="lib/waypoints/waypoints.min.js"></script>
+        <script src="lib/counterup/counterup.min.js"></script>
+        <script src="lib/superfish/hoverIntent.js"></script>
+        <script src="lib/superfish/superfish.min.js"></script>
+
+        <script src="contactform/contactform.js"></script>
+        <!-- Template Main Javascript File -->
+        <script src="js/main.js"></script>
+    </body>
+</html>

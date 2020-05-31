@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Commencer Consultation</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    </head>
+    <body>
+        <h1>Gestion Consultation</h1>
+        <div id="notification"></div>
+        
+        <br/>
+        <div>Si vous êtes prêt, cliquer sur le button "Je suis prêt" pour déclencher cette consultation</div>
+        <br/>
+        <div>Veulliez trouver l'information de client que vous allez consulter </div>
+        <br/>
+        
+        <div id="all">
+            Nom: <p id="champ-nom"></p>
+            <br/>
+            Prenom: <p id="champ-prenom"></p>
+            <br/>
+            Email: <p id="champ-email"></p>
+            <br/>
+            numero de téléphone:<p id="champ-tel"></p>
+            <br/>
+            code postale: <p id="champ-code"></p>
+            <br/>
+            animalTotem: <p id="champ-animalTotem"></p>
+            <br/>
+            couleurPorteBonheur:<p id="champ-couleurPorteBonheur"></p>
+            <br/>
+            signeAstrologiqueChinois:<p id="champ-signeAstrologiqueChinois"></p>
+            <br/>
+            signeDuZodiaque:<p id="champ-signeDuZodiaque"></p>
+            <br/>
+            dateDeNaissance:<p id="champ-dateDeNaissance"></p>
+            <br/>
+            Histoire de Consultation:<ul id="histoire"></ul>
+            <br/>
+            Medium joué<p id="champ-mediumDenom"></p>
+            <br/>
+            <button id="bouton-pret">Je suis prêt</button>
+            <button id="bouton-retour">Déconnecter</button>
+        </div>
+        <script>
+            $(document).ready( function () {
+                
+
+                    console.log("Charger l'info de client"); // LOG dans Console Javascript
+                    $('#notification').html("Charger l'info de client..."); // Message pour le paragraphe de notification
+
+                    // Récupération de la valeur des champs du formulaire
+                    $('#bouton-pret').on( 'click', function () {
+                        window.location.assign("./aiderMoi.html");
+                    });
+                    
+                    $('#bouton-retour').on( 'click', function () {
+                        window.location.assign("./loginEmploye.html");
+                    });
+                    function afficherClient(client) {
+                           
+                            $('#champ-nom').html(client.nom);
+                            $('#champ-prenom').html(client.prenom);
+                            $('#champ-email').html(client.mail);
+                            $('#champ-tel').html(client.tel);
+                            $('#champ-postal').html(client.postal);
+                            $('#champ-animalTotem').html(client.animalTotem);
+                            $('#champ-couleurPorteBonheur').html(client.couleurPorteBonheur);
+                            $('#champ-signeAstrologiqueChinois').html(client.signeAstrologiqueChinois);
+                            $('#champ-signeDuZodiaque').html(client.signeDuZodiaque);
+                            $('#champ-dateDeNaissance').html(client.dateDeNaissance);
+                            $('#champ-mediumDenom').html(client.mediumJoue);
+                            
+                            var i;
+                            for(i=0;i<client.listcons.length;i++){
+                                $('#histoire').append("<li>mediumDenomination:"+client.listcons[i].mediumDenomination+"<br/>");
+                                $('#histoire').append("mediumPresentation:"+client.listcons[i].mediumPresentation+"<br/>");
+                                $('#histoire').append(" dateDebut:"+client.listcons[i].dateDebut+"<br/>");
+                                $('#histoire').append(" employeNom:"+client.listcons[i].employeNom+"<br/>");
+                                $('#histoire').append(" employePrenom:"+client.listcons[i].employePrenom+"<br/>");
+                                $('#histoire').append(" Commentaire:"+client.listcons[i].commentaire+"</li>");
+                            }     
+                        
+                    }
+                    // Appel AJAX
+                    //
+                    //
+                    //要写和ajax有关的内容 需要employe 的 mail 和 motdePasse
+                    //
+                    
+                    
+                     $.ajax({
+                        url: './ActionServlet',
+                        method: 'POST',
+                        data: {
+                            todo: 'afficher-client-employe'
+                        },
+                        dataType: 'json'
+                    })
+                    .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                        console.log('Response',response); // LOG dans Console Javascript
+                        if (response.clientExist) {
+                            //$('#notification').html("Connexion OK");  // Message pour le paragraphe de notification
+                            // TODO: afficher les informations du client dans la notification
+                            // Exemple: Connexion de Ada Lovelace (ID 1)
+                            afficherClient(response);
+                            
+                        }
+                        else {
+                            $('#notification').html("Vous n'avez pas de client qui veux vous consulter en ce moment."); // Message pour le paragraphe de notification
+                            $('#all').html('');
+        }
+                    })
+                    .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                        console.log('Error',error); // LOG dans Console Javascript
+                        $('#notification').html("Vous n'avez pas de client qui veux vous consulter en ce moment."); // Message pour le paragraphe de notification
+                        $('#all').html('');
+                    })
+                    .always( function () { // Fonction toujours appelée
+                        
+                    });
+                
+                
+                
+                
+                
+            });
+        </script>
+    </body>
+</html>
